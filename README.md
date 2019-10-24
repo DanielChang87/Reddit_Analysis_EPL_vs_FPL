@@ -65,7 +65,40 @@ The dictionary below covers the relevant fields extracted from the API, and the 
 |ups|int64|Number of upvotes| |
 |comments|string/object|List of up to 10 comments extracted from the comments made in the post| Engineered field - To be included in bag of words|
 
+<b> Selection of Models </b>
 
+In this notebook we will be applying four different models to our dataset, namely:
+<li> Naive Bayes (multinomial) approach - this will be our baseline model
+<li> Logistic Regression approach
+<li> Linear SVM approach </li>
+<li> Decision Tree approach </li>
+
+As explained in the problem statement, the reason for running multiple models is to evaluate differences in features selected and predictive power. Furthermore, this lends itself to a bagging ensemble approach should we choose to use the model for predictive purposes rather than inferential purposes in the future.
+
+As for why these four models are chosen, all four support some form of feature importance method (either via .coefs_ or .get_feature_importances_), so we can evaluate the strength of features (words). Other classification models like KNearest Neighbors or Random Forests are not conducive to feature importance evaluations, and as such, will not be included in this project.
+
+<br>
+<br>
+<b> Datasets </b>
+
+Each model will be run on 4 different subsets of our master data:
+<li> Title only
+<li> Selftext only    
+<li> Comments only
+<li> Combined (Title + Selftext + Comments) </li>
+
+The purpose of running multiple subsets is to investigate how much 'text' from the post is needed before the model can make a good prediction (accuracy > 80%). Can we make a good model using only the title text? How about only the self text? At what point does adding more content/text to the model have diminishing returns? Are there differences in the type of comments made in both subreddits?
+<br>
+<br>
+<b> Interpreting text data </b>
+
+Two vectorizers will also be tested: A count vectorizer vs a tfidf vectorizer.
+
+CountVectorizer just counts the word frequencies, while the TFIDFVectorizer the value increases proportionally to count, but is offset by the frequency of the word in the corpus (the inverse document frequency). This helps to adjust for the fact that some words appear more frequently. The purpose of testing both is to see the effect on the top features selected - does the countvectorizer affect the top n predictive features?
+
+<b> Metrics for Evaluating Model </b>
+
+We will be using accuracy (correct predictions / total predictions) as the main metric for scoring our models, in combination with the AUC score (does the model do a good job of distinguishing the positive and the negative values?). The better the model is at making correct predictions (high accuracy), the better the selected features are at explaining the difference between the two.
 <b>Conclusion</b>
 From our look into the defining features of the FPL and EPL subreddit, we make the following findings:
 
